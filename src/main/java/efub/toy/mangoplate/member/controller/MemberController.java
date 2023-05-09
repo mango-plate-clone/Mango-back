@@ -3,6 +3,7 @@ package efub.toy.mangoplate.member.controller;
 import efub.toy.mangoplate.config.authentication.AuthUser;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.member.dto.LoginResponseDto;
+import efub.toy.mangoplate.member.dto.MemberResponseDto;
 import efub.toy.mangoplate.member.service.MemberService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
@@ -25,4 +26,10 @@ public class MemberController {
     public ResponseEntity<?> test(@AuthUser Member member){
         return new ResponseEntity<>(member, HttpStatus.OK);
     }
+
+    @GetMapping
+    public MemberResponseDto getMemberById(@AuthUser Member member) {
+        return memberService.findMemberById(member.getMemberId());
+    }
+
 }

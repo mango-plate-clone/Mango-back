@@ -7,6 +7,7 @@ import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.member.domain.oauth.KakaoProfile;
 import efub.toy.mangoplate.member.domain.oauth.OAuthToken;
 import efub.toy.mangoplate.member.dto.LoginResponseDto;
+import efub.toy.mangoplate.member.dto.MemberResponseDto;
 import efub.toy.mangoplate.member.dto.SignUpDto;
 import efub.toy.mangoplate.member.repository.MemberRepository;
 import lombok.RequiredArgsConstructor;
@@ -144,9 +145,9 @@ public class MemberService {
 
 
     @Transactional
-    public Member findMember(SignUpDto signUpDto) {
-        Member member = memberRepository.findByEmail(signUpDto.getEmail())
+    public MemberResponseDto findMemberById(Long memberId) {
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
-        return member;
+        return new MemberResponseDto(member);
     }
 }

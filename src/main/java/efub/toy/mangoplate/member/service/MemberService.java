@@ -23,7 +23,9 @@ import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
 import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -149,5 +151,12 @@ public class MemberService {
         Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new IllegalArgumentException("가입되지 않은 사용자입니다."));
         return new MemberResponseDto(member);
+    }
+
+    public List<MemberResponseDto> findMemberList() {
+        return memberRepository.findAll()
+                .stream()
+                .map(user -> new MemberResponseDto(user))
+                .collect(Collectors.toList());
     }
 }

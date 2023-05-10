@@ -108,32 +108,33 @@ public class MemberService {
 
     public Member saveMember(@RequestBody KakaoProfile kakaoProfile) {
         //Member 저장
-        Member kakaoMember = Member.builder()
-                .email(kakaoProfile.getKakao_account().getEmail())
-                .nickname(kakaoProfile.getKakao_account().profile.nickname)
-                .build();
+        Member kakaoMember = memberRepository.findByEmail(kakaoProfile.getKakao_account().getEmail());
 
-        if(!memberRepository.existsByEmail(kakaoMember.getEmail())) {
-            return addMember(new SignUpDto(kakaoMember)); //기존 회원이 아니면 자동 회원가입을 진행
+        if(kakaoMember == null) {
+            //기존 회원이 아니면 자동 회원가입을 진행
+            kakaoMember = Member.builder()
+                    .email(kakaoProfile.getKakao_account().getEmail())
+                    .nickname(kakaoProfile.getKakao_account().profile.nickname)
+                    .build();
+            memberRepository.save(kakaoMember);
         }
-
         return kakaoMember;
     }
 
 
-    @Transactional
-    public Member addMember(SignUpDto signUpDto) {
-        Optional<Member> member = memberRepository.findByEmail(signUpDto.getEmail());
-
-        if(member.isPresent())
-            throw new IllegalArgumentException("이미 가입되어있는 정보입니다.");
-        return memberRepository.save(
-                Member.builder()
-                        .email(signUpDto.getEmail())
-                        .nickname(signUpDto.getNickname())
-                        .build()
-        );
-    }
+//    @Transactional
+//    public Member addMember(SignUpDto signUpDto) {
+//        Optional<Member> member = memberRepository.findByEmail(signUpDto.getEmail());
+//
+//        if(member.isPresent())
+//            throw new IllegalArgumentException("이미 가입되어있는 정보입니다.");
+//        return memberRepository.save(
+//                Member.builder()
+//                        .email(signUpDto.getEmail())
+//                        .nickname(signUpDto.getNickname())
+//                        .build()
+//        );
+//    }
 
     public LoginResponseDto login(Member member) {
         String authToken = jwtTokenProvider.createAccessToken(member.getMemberId());

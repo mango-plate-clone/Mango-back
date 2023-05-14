@@ -1,5 +1,6 @@
 package efub.toy.mangoplate.store.domain;
 
+import efub.toy.mangoplate.global.BaseEntity;
 import efub.toy.mangoplate.menu.domain.Menu;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -13,7 +14,7 @@ import java.util.List;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store {
+public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -58,6 +59,15 @@ public class Store {
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menuList = new ArrayList<>();
+
+    public void updateStar(int star, int reviewCount){
+        this.starAverage = (this.starAverage * reviewCount + star) / (reviewCount +1);
+
+        String[] ratings = this.starCount.split("\\|");
+        ratings[star-1] = String.valueOf(Integer.parseInt(ratings[star-1]) + 1);
+        String newStarCount = String.join("|", ratings);
+        this.starCount = newStarCount;
+    }
 
     @Builder
     public Store(Long id, String name, String address, String  phone, Integer isParking,

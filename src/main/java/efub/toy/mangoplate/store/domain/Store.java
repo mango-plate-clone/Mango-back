@@ -17,8 +17,8 @@ public class Store {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+    @Column(name = "id", updatable = false)
+    private Long storeId;
 
     @Column(nullable = false, length = 30)
     private String name;
@@ -60,10 +60,10 @@ public class Store {
     private List<Menu> menuList = new ArrayList<>();
 
     @Builder
-    public Store(Long id, String name, String address, String  phone, Integer isParking,
+    public Store(Long storeId, String name, String address, String  phone, Integer isParking,
                    String operationHours, String imageUrl, String recommendation, Long averagePrice,
                    Float starAverage, String starCount, String type, String location){
-        this.id = id;
+        this.storeId = storeId;
         this.name = name;
         this.address = address;
         this.phone = phone;

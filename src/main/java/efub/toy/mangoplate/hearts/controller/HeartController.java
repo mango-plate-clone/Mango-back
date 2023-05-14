@@ -22,4 +22,10 @@ public class HeartController {
         return new ResponseEntity<>(response, HttpStatus.CREATED);
     }
 
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> cancelStore(@PathVariable Long id, @AuthUser Member member) {
+        String response = heartService.cancelStoreLike(id, member);
+        return new ResponseEntity<>(response, HttpStatus.OK);
+    }
+
 }

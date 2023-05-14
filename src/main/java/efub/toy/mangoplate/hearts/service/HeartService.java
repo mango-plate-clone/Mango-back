@@ -31,4 +31,14 @@ public class HeartService {
         }
     }
 
+    public String cancelStoreLike(Long id, Member member) {
+        Store store = storeRepository.findById(id).orElseThrow
+                (() -> new IllegalArgumentException("해당 가게가 없습니다. id=" + id));
+        Heart heart = heartRepository.findByMemberAndStore(member, store).orElseThrow
+                (() -> new IllegalArgumentException("아직 찜하지 않은 가게입니다."));
+        heartRepository.delete(heart);
+        return id+"번 가게 찜 취소";
+    }
+
+
 }

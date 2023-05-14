@@ -51,7 +51,7 @@ public class StoreService {
     
     private StoreDto convertEntityToDto(Store store){
         return StoreDto.builder()
-                .id(store.getId())
+                .storeId(store.getStoreId())
                 .name(store.getName())
                 .address(store.getAddress())
                 .phone(store.getPhone())

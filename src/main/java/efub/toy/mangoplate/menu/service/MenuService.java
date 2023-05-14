@@ -2,7 +2,6 @@ package efub.toy.mangoplate.menu.service;
 
 import efub.toy.mangoplate.menu.domain.Menu;
 import efub.toy.mangoplate.menu.repository.MenuRepository;
-import efub.toy.mangoplate.store.domain.Store;
 import efub.toy.mangoplate.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class MenuService {
     private final StoreService storeService;
 
     public List<Menu> findCategoryMenuList(String category, Long storeId){
-        return menuRepository.findByCategoryAndStore_Id(category, storeId);
+        return menuRepository.findByCategoryAndStore_storeId(category, storeId);
     }
 
 }

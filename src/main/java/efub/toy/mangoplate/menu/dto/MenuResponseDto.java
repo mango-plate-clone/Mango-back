@@ -10,7 +10,7 @@ import lombok.Getter;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class MenuResponseDto {
-    private Long id;
+    private Long menuId;
     private String category;
     private String name;
     private Long price;
@@ -19,12 +19,12 @@ public class MenuResponseDto {
 
     public static MenuResponseDto of(Menu menu){
         return MenuResponseDto.builder()
-                .id(menu.getId())
+                .menuId(menu.getMenuId())
                 .category(menu.getCategory())
                 .name(menu.getName())
                 .price(menu.getPrice())
                 .imageUrl(menu.getImageUrl())
-                .storeId(menu.getStore().getId())
+                .storeId(menu.getStore().getStoreId())
                 .build();
     }
 }

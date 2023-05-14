@@ -5,7 +5,10 @@ import efub.toy.mangoplate.menu.service.MenuService;
 import efub.toy.mangoplate.store.dto.StoreMenusResponseDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.ResponseStatus;
+import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
@@ -15,7 +18,7 @@ public class StoreMenuController {
     private final MenuService menuService;
 
     // 가게&음식 카테고리별 메뉴 조회
-    @GetMapping("/stores/{storeId}/menus/{category}")
+    @GetMapping("/stores/{storeId}/menus/category/{category}")
     @ResponseStatus(HttpStatus.OK)
     public StoreMenusResponseDto readStoreMenus(@PathVariable Long storeId, @PathVariable String category){
         List<Menu> menuList = menuService.findCategoryMenuList(category, storeId);

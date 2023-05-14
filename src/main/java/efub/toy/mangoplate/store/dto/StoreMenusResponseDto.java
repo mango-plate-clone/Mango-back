@@ -13,12 +13,12 @@ import java.util.stream.Collectors;
 @AllArgsConstructor(access = AccessLevel.PRIVATE)
 @Builder
 public class StoreMenusResponseDto {
-    private Long id;
+    private Long storeId;
     private List<StoreMenu> menus;
 
-    public static StoreMenusResponseDto of(Long id, List<Menu> menuList){
+    public static StoreMenusResponseDto of(Long storeId, List<Menu> menuList){
         return StoreMenusResponseDto.builder()
-                .id(id)
+                .storeId(storeId)
                 .menus(menuList.stream().map(StoreMenu::of).collect(Collectors.toList()))
                 .build();
     }
@@ -32,7 +32,7 @@ public class StoreMenusResponseDto {
         private String imageUrl;
 
         public StoreMenu(Menu menu){
-            this.menuId = menu.getId();
+            this.menuId = menu.getMenuId();
             this.category = menu.getCategory();
             this.name = menu.getName();
             this.price = menu.getPrice();

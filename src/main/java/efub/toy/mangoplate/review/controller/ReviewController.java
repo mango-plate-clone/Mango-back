@@ -39,7 +39,7 @@ public class ReviewController extends BaseEntity {
 
     @PutMapping("/{reviewId}")
     public ResponseEntity<ReviewResDto> modifyReview(@AuthUser Member member,@PathVariable Long reviewId, @RequestBody ReviewUpdateReqDto reviewUpdateReqDto){
-        ReviewResDto reviewResDto = reviewFacade.updateReview(member, reviewUpdateReqDto);
+        ReviewResDto reviewResDto = reviewFacade.updateReview(member, reviewId, reviewUpdateReqDto);
         return ResponseEntity.ok(reviewResDto);
     }
 

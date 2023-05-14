@@ -28,7 +28,7 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public ReviewResDto createByReviewReqDto(Member member, Store store, ReviewReqDto reviewReqDto) {
+    public Review createByReviewReqDto(Member member, Store store, ReviewReqDto reviewReqDto) {
         Review review = Review.builder()
                 .star(reviewReqDto.getStar())
                 .title(reviewReqDto.getTitle())
@@ -40,11 +40,8 @@ public class ReviewService {
                 .build();
 
 
-        reviewRepository.save(review);
+        return reviewRepository.save(review);
 
-        return ReviewResDto.builder()
-                .review(review)
-                .build();
     }
 
     @Transactional(readOnly = true)
@@ -76,8 +73,8 @@ public class ReviewService {
 
     }
 
-    public ReviewResDto updateReview(ReviewUpdateReqDto reviewUpdateReqDto) {
-        Review review = reviewRepository.findById(reviewUpdateReqDto.getReviewId()).orElseThrow(()-> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
+    public ReviewResDto updateReview(Long reviewId, ReviewUpdateReqDto reviewUpdateReqDto) {
+        Review review = reviewRepository.findById(reviewId).orElseThrow(()-> new CustomException(ErrorCode.REVIEW_NOT_FOUND));
         review.update(reviewUpdateReqDto);
         reviewRepository.save(review);
 

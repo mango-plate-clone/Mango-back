@@ -18,8 +18,8 @@ public class ReviewResDto {
     private String content;
     private Boolean hasImage;
     private String imageUrl;
-    private LocalDateTime createdDate;
-    private LocalDateTime modifiedDate;
+    private LocalDateTime createdAt;
+    private LocalDateTime modifiedAt;
 
     @Builder
     public ReviewResDto(Review review) {
@@ -31,6 +31,7 @@ public class ReviewResDto {
         this.content = review.getContent();
         this.hasImage = review.getHasImage();
         this.imageUrl = review.getImageUrl();
-        this.createdDate = review.getCreatedAt();
+        this.createdAt = review.getCreatedAt();
+        this.modifiedAt = review.getModifiedAt();
     }
 }

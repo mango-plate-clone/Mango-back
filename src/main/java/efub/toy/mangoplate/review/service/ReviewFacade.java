@@ -8,7 +8,6 @@ import efub.toy.mangoplate.review.dto.SortType;
 import efub.toy.mangoplate.review.dto.request.ReviewReqDto;
 import efub.toy.mangoplate.review.dto.request.ReviewUpdateReqDto;
 import efub.toy.mangoplate.review.dto.response.ReviewResDto;
-import efub.toy.mangoplate.review.exception.InvalidMemberException;
 import efub.toy.mangoplate.store.domain.Store;
 import efub.toy.mangoplate.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
@@ -30,7 +29,10 @@ public class ReviewFacade {
         Store store  = storeService.findStoreById(reviewReqDto.getStoreId());
         int reviewCount = reviewService.getReviewCount(store.getId());
         store.updateStar(reviewReqDto.getStar(), reviewCount);
-        return reviewService.createByReviewReqDto(member,store, reviewReqDto);
+        Review review = reviewService.createByReviewReqDto(member,store, reviewReqDto);
+        return ReviewResDto.builder()
+                .review(review)
+                .build();
     }
 
     @Transactional(readOnly = true)
@@ -40,11 +42,12 @@ public class ReviewFacade {
     }
 
     @Transactional
-    public ReviewResDto updateReview(Member member, ReviewUpdateReqDto reviewUpdateReqDto) {
-        if(!reviewUpdateReqDto.getMemberId().equals(member.getMemberId())){
+    public ReviewResDto updateReview(Member member, Long reviewId, ReviewUpdateReqDto reviewUpdateReqDto) {
+        Review review = reviewService.getReviewById(reviewId);
+        if(!review.getMember().getMemberId().equals(member.getMemberId())){
             throw new CustomException(ErrorCode.INVALID_MEMBER);
         }
-       ReviewResDto reviewResDto = reviewService.updateReview(reviewUpdateReqDto);
+       ReviewResDto reviewResDto = reviewService.updateReview(reviewId, reviewUpdateReqDto);
        return reviewResDto;
     }
 

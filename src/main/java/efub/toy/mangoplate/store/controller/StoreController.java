@@ -44,10 +44,8 @@ public class StoreController {
     }
 
     // 가게 이름 검색
-    @GetMapping("/search") // 가게 이름 검색창 눌렀을 때
-    public String search(@RequestParam(value = "name") String name, Model model) {
-        List<StoreDto> storeDtoList = storeService.searchStore(name);
-        model.addAttribute("storeSearchList", storeDtoList);
-        return "/stores/search";
+    @GetMapping("/search")
+    public List<StoreDto> search(@RequestParam(value = "name") String name) {
+        return storeService.searchStore(name);
     }
 }

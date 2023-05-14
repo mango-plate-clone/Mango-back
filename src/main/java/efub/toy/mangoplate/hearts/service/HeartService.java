@@ -1,5 +1,6 @@
 package efub.toy.mangoplate.hearts.service;
 
+import efub.toy.mangoplate.hearts.dto.HeartStoreDto;
 import efub.toy.mangoplate.hearts.repository.HeartRepository;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.store.domain.Store;
@@ -8,6 +9,9 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import efub.toy.mangoplate.hearts.domain.Heart;
+
+import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
@@ -39,6 +43,14 @@ public class HeartService {
         heartRepository.delete(heart);
         return id+"번 가게 찜 취소";
     }
+
+    public List<HeartStoreDto> findHeartStoreList(Member member) {
+        return heartRepository.findAllByMember(member)
+                .stream()
+                .map(heart -> new HeartStoreDto(heart))
+                .collect(Collectors.toList());
+    }
+
 
 
 }

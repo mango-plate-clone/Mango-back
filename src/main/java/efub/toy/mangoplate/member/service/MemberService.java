@@ -121,21 +121,6 @@ public class MemberService {
         return kakaoMember;
     }
 
-
-//    @Transactional
-//    public Member addMember(SignUpDto signUpDto) {
-//        Optional<Member> member = memberRepository.findByEmail(signUpDto.getEmail());
-//
-//        if(member.isPresent())
-//            throw new IllegalArgumentException("이미 가입되어있는 정보입니다.");
-//        return memberRepository.save(
-//                Member.builder()
-//                        .email(signUpDto.getEmail())
-//                        .nickname(signUpDto.getNickname())
-//                        .build()
-//        );
-//    }
-
     public LoginResponseDto login(Member member) {
         String authToken = jwtTokenProvider.createAccessToken(member.getMemberId());
 

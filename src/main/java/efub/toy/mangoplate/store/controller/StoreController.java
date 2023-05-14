@@ -20,15 +20,15 @@ public class StoreController {
     private final StoreService storeService;
 
     //가게 상세 조회
-    @GetMapping("/{id}")
+    @GetMapping("/details/{storeId}")
     @ResponseStatus(value = HttpStatus.OK)
-    public StoreResponseDto getStore(@PathVariable Long id){
-        Store store = storeService.findStoreById(id);
+    public StoreResponseDto getStore(@PathVariable Long storeId){
+        Store store = storeService.findStoreById(storeId);
         return StoreResponseDto.from(store);
     }
 
     // 음식 타입별 가게 리스트 조회
-    @GetMapping("/{type}")
+    @GetMapping("/type/{type}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<StoreResponseDto> StoreTypeListFind(@PathVariable String type){
         List<Store> storeList = storeService.findTypeStoreList(type);
@@ -36,7 +36,7 @@ public class StoreController {
     }
 
     // 지역별 가게 리스트 조회
-    @GetMapping("/{location}")
+    @GetMapping("/location/{location}")
     @ResponseStatus(value = HttpStatus.OK)
     public List<StoreResponseDto> StoreLocationListFind(@PathVariable String location){
         List<Store> storeList = storeService.findLocationStoreList(location);
@@ -44,14 +44,8 @@ public class StoreController {
     }
 
     // 가게 이름 검색
-    @GetMapping("/search") // 가게 이름 검색창 눌렀을 때
-    public String search(@RequestParam(value = "name") String name, Model model) {
-        List<StoreDto> storeDtoList = storeService.searchStore(name);
-        model.addAttribute("storeSearchList", storeDtoList);
-        return "/stores/search";
+    @GetMapping("/search")
+    public List<StoreDto> search(@RequestParam(value = "name") String name) {
+        return storeService.searchStore(name);
     }
-
-
-
-
 }

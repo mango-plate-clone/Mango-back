@@ -8,7 +8,7 @@ import lombok.*;
 @ToString
 @NoArgsConstructor
 public class StoreDto {
-    private Long id;
+    private Long storeId;
     private String name;
     private String address;
     private String phone;
@@ -24,7 +24,7 @@ public class StoreDto {
 
     public Store toEntity(){
         return Store.builder()
-                .id(id)
+                .storeId(storeId)
                 .name(name)
                 .address(address)
                 .phone(phone)
@@ -41,10 +41,10 @@ public class StoreDto {
     }
 
     @Builder
-    public StoreDto(Long id, String name, String address, String  phone, Integer isParking,
+    public StoreDto(Long storeId, String name, String address, String  phone, Integer isParking,
                     String operationHours, String imageUrl, String recommendation, Long averagePrice,
                     Float starAverage,String starCount, String type, String location){
-        this.id = id;
+        this.storeId = storeId;
         this.name = name;
         this.address = address;
         this.phone = phone;

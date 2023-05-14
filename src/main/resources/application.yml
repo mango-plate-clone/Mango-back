@@ -1,9 +1,9 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: create-drop
+      ddl-auto: update
     generate-ddl: true
-    show-sql: true
+    show-sql: false
   mvc:
     hiddenmethod:
       filter:

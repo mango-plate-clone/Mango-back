@@ -14,7 +14,7 @@ public class HeartStoreDto {
     public HeartStoreDto(Heart heart) {
         this.heartId = heart.getHeartId();
         this.memberId = heart.getMember().getMemberId();
-        this.storeId = heart.getStore().getId();
+        this.storeId = heart.getStore().getStoreId();
         this.name = heart.getStore().getName();
         this.imageUrl = heart.getStore().getImageUrl();
     }

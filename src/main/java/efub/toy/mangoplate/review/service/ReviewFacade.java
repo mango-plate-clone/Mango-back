@@ -27,7 +27,7 @@ public class ReviewFacade {
     @Transactional
     public ReviewResDto createByReviewReqDto(Member member, ReviewReqDto reviewReqDto){
         Store store  = storeService.findStoreById(reviewReqDto.getStoreId());
-        int reviewCount = reviewService.getReviewCount(store.getId());
+        int reviewCount = reviewService.getReviewCount(store.getStoreId());
         store.updateStar(reviewReqDto.getStar(), reviewCount);
         Review review = reviewService.createByReviewReqDto(member,store, reviewReqDto);
         return ReviewResDto.builder()

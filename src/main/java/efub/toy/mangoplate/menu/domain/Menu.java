@@ -13,9 +13,9 @@ import javax.persistence.*;
 public class Menu {
 
     @Id
-    @GeneratedValue
-    @Column(nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long MenuId;
 
     @Column(nullable = false, length = 30)
     private String category;

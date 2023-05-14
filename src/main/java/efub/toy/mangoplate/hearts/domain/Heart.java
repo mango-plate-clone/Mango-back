@@ -27,8 +27,7 @@ public class Heart{
     private Store store;
 
     @Builder
-    public Heart(Long heartId, Member member, Store store) {
-        this.heartId = heartId;
+    public Heart(Member member, Store store) {
         this.member = member;
         this.store = store;
     }

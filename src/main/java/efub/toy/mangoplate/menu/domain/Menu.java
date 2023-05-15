@@ -1,5 +1,6 @@
 package efub.toy.mangoplate.menu.domain;
 
+import com.sun.istack.NotNull;
 import efub.toy.mangoplate.store.domain.Store;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -13,20 +14,24 @@ import javax.persistence.*;
 public class Menu {
 
     @Id
-    @GeneratedValue
-    @Column(nullable = false)
-    private Long id;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id", nullable = false, updatable = false)
+    private Long MenuId;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private String category;
 
-    @Column(nullable = false, length = 100)
+    @NotNull
+    @Column(length = 100)
     private String name;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private Long price;
 
-    @Column(nullable = false)
+    @NotNull
+    @Column
     private String imageUrl;
 
     @ManyToOne(fetch = FetchType.LAZY)

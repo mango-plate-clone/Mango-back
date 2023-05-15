@@ -1,5 +1,6 @@
 package efub.toy.mangoplate.store.domain;
 
+import efub.toy.mangoplate.global.BaseEntity;
 import efub.toy.mangoplate.menu.domain.Menu;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -7,63 +8,85 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
+import javax.validation.constraints.NotNull;
 import java.util.ArrayList;
 import java.util.List;
 
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class Store {
+public class Store extends BaseEntity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column
-    private Long id;
+    @Column(name = "id", updatable = false)
+    private Long storeId;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private String name;
 
-    @Column(nullable = false)
+    @NotNull
+    @Column
     private String address;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private String phone;
 
-    @Column(name = "is_parking", nullable = false)
+    @NotNull
+    @Column(name = "is_parking")
     private Integer isParking;
 
-    @Column(name = "operation_hours", nullable = false, length = 30)
+    @NotNull
+    @Column(name = "operation_hours", length = 30)
     private String operationHours;
 
-    @Column(name = "image_url", nullable = false)
+    @NotNull
+    @Column(name = "image_url")
     private String imageUrl;
 
-    @Column(nullable = false, length = 100)
+    @NotNull
+    @Column(length = 100)
     private String recommendation;
 
-    @Column(name = "average_price", nullable = false)
+    @NotNull
+    @Column(name = "average_price")
     private Long averagePrice;
 
-    @Column(name = "star_average", nullable = false)
+    @NotNull
+    @Column(name = "star_average")
     private Float starAverage;
 
-    @Column(name = "star_count", nullable = false, length = 30)
+    @NotNull
+    @Column(name = "star_count", length = 30)
     private String starCount;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private String type;
 
-    @Column(nullable = false, length = 30)
+    @NotNull
+    @Column(length = 30)
     private String location;
 
     @OneToMany(mappedBy = "store", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<Menu> menuList = new ArrayList<>();
 
+    public void updateStar(int star, int reviewCount){
+        this.starAverage = (this.starAverage * reviewCount + star) / (reviewCount +1);
+
+        String[] ratings = this.starCount.split("\\|");
+        ratings[star-1] = String.valueOf(Integer.parseInt(ratings[star-1]) + 1);
+        String newStarCount = String.join("|", ratings);
+        this.starCount = newStarCount;
+    }
+
     @Builder
-    public Store(Long id, String name, String address, String  phone, Integer isParking,
+    public Store(Long storeId, String name, String address, String  phone, Integer isParking,
                    String operationHours, String imageUrl, String recommendation, Long averagePrice,
                    Float starAverage, String starCount, String type, String location){
-        this.id = id;
+        this.storeId = storeId;
         this.name = name;
         this.address = address;
         this.phone = phone;

@@ -1,8 +1,8 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
-    generate-ddl: true
+      ddl-auto: validate
+    generate-ddl: false
     show-sql: false
   mvc:
     hiddenmethod:

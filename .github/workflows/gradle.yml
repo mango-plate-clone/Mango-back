@@ -104,9 +104,9 @@ jobs:
           envs: GITHUB_SHA
           script: |
             sudo docker stop mangoSpring && sudo docker rm mangoSpring
-            sudo docker rmi -f ${{ secrets.DOCKER_REPO }}
-            sudo docker pull ${{ secrets.DOCKER_REPO }}
-            sudo docker run -d --name mangoSpring -p 8090:8080 ${{ secrets.DOCKER_REPO }}
+            sudo docker rmi -f mangoplate
+            sudo docker pull mangoplate
+            sudo docker run -d --name mangoSpring -p 8090:8080 mangoplate
 
       - name: Remove Github Actions IP From Security Group
         run: |

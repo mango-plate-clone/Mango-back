@@ -106,7 +106,7 @@ jobs:
             sudo docker stop mangospring && sudo docker rm mangospring
             sudo docker rmi -f mangoplate
             sudo docker pull  ${{ secrets.DOCKERHUB_USERNAME }}/mangoplate
-            sudo docker run -d --name mangospring -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/mangoplate
+            sudo docker run -d --name mangospring --cpu-shares 512 --memory="1g" -p 8080:8080 ${{ secrets.DOCKERHUB_USERNAME }}/mangoplate
 
       - name: Remove Github Actions IP From Security Group
         run: |

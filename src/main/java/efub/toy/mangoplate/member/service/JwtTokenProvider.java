@@ -1,5 +1,7 @@
 package efub.toy.mangoplate.member.service;
 
+import efub.toy.mangoplate.global.exception.CustomException;
+import efub.toy.mangoplate.global.exception.ErrorCode;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.member.repository.MemberRepository;
 import io.jsonwebtoken.*;
@@ -53,24 +55,24 @@ public class JwtTokenProvider {
 
     public Authentication getAuthenticationFromRequest(HttpServletRequest request){
         String token = request.getHeader("Authorization");
-        Long userId  = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
-        Member member = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-        return new UsernamePasswordAuthenticationToken(member, "");
+        try {
+            Long userId = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
+            Member member = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+            return new UsernamePasswordAuthenticationToken(member, "");
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        } catch (IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.NON_LOGIN);
+        }
     }
 
     public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             return claims.getBody().getExpiration().after(new Date());
-        } catch (MalformedJwtException e) {
-            throw new MalformedJwtException("손상된 토큰입니다");
-        } catch (ExpiredJwtException e) {
-                throw new JwtException("만료된 토큰입니다");
-        } catch (UnsupportedJwtException e) {
-            throw new UnsupportedJwtException("지원하지 않는 토큰입니다");
-        } catch (SignatureException e) {
-            throw new SignatureException("시그니처 검증에 실패한 토큰입니다");
         } catch (Exception e){
             return false;
         }

@@ -1,8 +1,6 @@
 package efub.toy.mangoplate.config;
 
 import efub.toy.mangoplate.member.service.JwtTokenProvider;
-import io.jsonwebtoken.ExpiredJwtException;
-import io.jsonwebtoken.JwtException;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;

@@ -2,10 +2,7 @@ package efub.toy.mangoplate.member.service;
 
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.member.repository.MemberRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,6 +47,10 @@ public class JwtTokenProvider {
         return this.createToken(userId.toString(), accessTokenValidTime);
     }
 
+    public String resolveJwtToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
+    }
+
     public Authentication getAuthenticationFromRequest(HttpServletRequest request){
         String token = request.getHeader("Authorization");
         Long userId  = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
@@ -58,12 +59,19 @@ public class JwtTokenProvider {
         return new UsernamePasswordAuthenticationToken(member, "");
     }
 
-    public boolean validateToken(String jwtToken){
+    public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             return claims.getBody().getExpiration().after(new Date());
-        }
-        catch (Exception e){
+        } catch (MalformedJwtException e) {
+            throw new MalformedJwtException("손상된 토큰입니다");
+        } catch (ExpiredJwtException e) {
+                throw new JwtException("만료된 토큰입니다");
+        } catch (UnsupportedJwtException e) {
+            throw new UnsupportedJwtException("지원하지 않는 토큰입니다");
+        } catch (SignatureException e) {
+            throw new SignatureException("시그니처 검증에 실패한 토큰입니다");
+        } catch (Exception e){
             return false;
         }
     }

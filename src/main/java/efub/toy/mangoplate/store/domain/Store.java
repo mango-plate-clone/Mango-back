@@ -74,7 +74,7 @@ public class Store extends BaseEntity {
     private List<Menu> menuList = new ArrayList<>();
 
     public void updateStar(int star, int reviewCount){
-        this.starAverage = (this.starAverage * reviewCount + star) / (reviewCount +1);
+        this.starAverage = Math.round((this.starAverage * reviewCount + star) / (reviewCount +1)*10)/10.0f; //소수점 첫째자리까지 반올림
 
         String[] ratings = this.starCount.split("\\|");
         ratings[star-1] = String.valueOf(Integer.parseInt(ratings[star-1]) + 1);

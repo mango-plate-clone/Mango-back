@@ -1,7 +1,7 @@
 package efub.toy.mangoplate.review.service;
 
-import efub.toy.mangoplate.global.CustomException;
-import efub.toy.mangoplate.global.ErrorCode;
+import efub.toy.mangoplate.global.exception.CustomException;
+import efub.toy.mangoplate.global.exception.ErrorCode;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.review.domain.Review;
 import efub.toy.mangoplate.review.dto.SortType;
@@ -11,12 +11,10 @@ import efub.toy.mangoplate.review.dto.response.ReviewResDto;
 import efub.toy.mangoplate.store.domain.Store;
 import efub.toy.mangoplate.store.service.StoreService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
-import java.util.Objects;
 
 @RequiredArgsConstructor
 @Component
@@ -25,11 +23,11 @@ public class ReviewFacade {
     private final StoreService storeService;
 
     @Transactional
-    public ReviewResDto createByReviewReqDto(Member member, ReviewReqDto reviewReqDto){
+    public ReviewResDto createByReviewReqDto(Member member, ReviewReqDto reviewReqDto, String fileUrl){
         Store store  = storeService.findStoreById(reviewReqDto.getStoreId());
         int reviewCount = reviewService.getReviewCount(store.getStoreId());
         store.updateStar(reviewReqDto.getStar(), reviewCount);
-        Review review = reviewService.createByReviewReqDto(member,store, reviewReqDto);
+        Review review = reviewService.createByReviewReqDto(member,store, reviewReqDto, fileUrl);
         return ReviewResDto.builder()
                 .review(review)
                 .build();

@@ -8,8 +8,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 
 public interface ReviewRepository extends JpaRepository<Review, Long> {
-    int countByStoreId(Long storeId);
-    List<Review> findAllByStoreIdOrderByCreatedAtDesc(Long storeId);
-    List<Review> findAllByStoreIdOrderByStarDesc(Long storeId);
+    int countByStoreStoreId(Long storeId);
+    List<Review> findAllByStoreStoreIdOrderByCreatedAtDesc(Long storeId);
+    List<Review> findAllByStoreStoreIdOrderByStarDesc(Long storeId);
 
 }

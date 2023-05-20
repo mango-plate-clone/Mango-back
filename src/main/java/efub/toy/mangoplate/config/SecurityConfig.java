@@ -17,8 +17,10 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain filterChain(HttpSecurity httpSecurity) throws Exception{
         httpSecurity.csrf().disable()
+                .cors().disable()
                 .headers().frameOptions().disable()
                 .and().authorizeHttpRequests()
+                .antMatchers("/members/**","/stores/**", "reviews/**", "hearts/**").permitAll()
                 .anyRequest().permitAll();
         return httpSecurity.build();
     }

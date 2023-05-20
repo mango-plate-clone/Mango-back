@@ -46,7 +46,7 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public int getReviewCount(Long storeId) {
-        return reviewRepository.countByStoreId(storeId);
+        return reviewRepository.countByStoreStoreId(storeId);
     }
     @Transactional(readOnly = true)
     public Review getReviewById(Long reviewId){
@@ -56,11 +56,11 @@ public class ReviewService {
     public List<ReviewResDto> getReviewList(Long storeId, SortType sortType) {
         List<Review> reviewList = new Stack<>();
         if(sortType.equals(SortType.LATEST)){
-            reviewList = reviewRepository.findAllByStoreIdOrderByCreatedAtDesc(storeId);
+            reviewList = reviewRepository.findAllByStoreStoreIdOrderByCreatedAtDesc(storeId);
         }
 
         if(sortType.equals(SortType.HIGHSCORE)){
-            reviewList = reviewRepository.findAllByStoreIdOrderByStarDesc(storeId);
+            reviewList = reviewRepository.findAllByStoreStoreIdOrderByStarDesc(storeId);
         }
 
         List<ReviewResDto> reviewResDtoList = reviewList.stream()

@@ -25,7 +25,7 @@ public class ReviewResDto {
     public ReviewResDto(Review review) {
         this.reviewId = review.getReviewId();
         this.memberId = review.getMember().getMemberId();
-        this.storeId = review.getStore().getId();
+        this.storeId = review.getStore().getStoreId();
         this.star = review.getStar();
         this.title = review.getTitle();
         this.content = review.getContent();

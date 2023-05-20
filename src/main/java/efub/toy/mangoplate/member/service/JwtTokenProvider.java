@@ -1,11 +1,10 @@
 package efub.toy.mangoplate.member.service;
 
+import efub.toy.mangoplate.global.exception.CustomException;
+import efub.toy.mangoplate.global.exception.ErrorCode;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.member.repository.MemberRepository;
-import io.jsonwebtoken.Claims;
-import io.jsonwebtoken.Jws;
-import io.jsonwebtoken.Jwts;
-import io.jsonwebtoken.SignatureAlgorithm;
+import io.jsonwebtoken.*;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -50,20 +49,31 @@ public class JwtTokenProvider {
         return this.createToken(userId.toString(), accessTokenValidTime);
     }
 
-    public Authentication getAuthenticationFromRequest(HttpServletRequest request){
-        String token = request.getHeader("Authorization");
-        Long userId  = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
-        Member member = userRepository.findById(userId)
-                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
-        return new UsernamePasswordAuthenticationToken(member, "");
+    public String resolveJwtToken(HttpServletRequest request) {
+        return request.getHeader("Authorization");
     }
 
-    public boolean validateToken(String jwtToken){
+    public Authentication getAuthenticationFromRequest(HttpServletRequest request){
+        String token = request.getHeader("Authorization");
+        try {
+            Long userId = Long.valueOf(Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(token).getBody().getSubject());
+            Member member = userRepository.findById(userId)
+                    .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 유저입니다."));
+            return new UsernamePasswordAuthenticationToken(member, "");
+        } catch (ExpiredJwtException e) {
+            throw new CustomException(ErrorCode.EXPIRED_TOKEN);
+        } catch (JwtException e) {
+            throw new CustomException(ErrorCode.INVALID_TOKEN);
+        } catch (IllegalArgumentException e) {
+            throw new CustomException(ErrorCode.NON_LOGIN);
+        }
+    }
+
+    public boolean validateToken(String jwtToken) {
         try {
             Jws<Claims> claims = Jwts.parser().setSigningKey(SECRET_KEY).parseClaimsJws(jwtToken);
             return claims.getBody().getExpiration().after(new Date());
-        }
-        catch (Exception e){
+        } catch (Exception e){
             return false;
         }
     }

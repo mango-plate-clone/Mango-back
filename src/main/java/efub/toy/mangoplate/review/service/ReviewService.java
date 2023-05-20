@@ -1,7 +1,7 @@
 package efub.toy.mangoplate.review.service;
 
-import efub.toy.mangoplate.global.CustomException;
-import efub.toy.mangoplate.global.ErrorCode;
+import efub.toy.mangoplate.global.exception.CustomException;
+import efub.toy.mangoplate.global.exception.ErrorCode;
 import efub.toy.mangoplate.member.domain.Member;
 import efub.toy.mangoplate.review.domain.Review;
 import efub.toy.mangoplate.review.dto.SortType;
@@ -11,12 +11,9 @@ import efub.toy.mangoplate.review.dto.response.ReviewResDto;
 import efub.toy.mangoplate.review.repository.ReviewRepository;
 import efub.toy.mangoplate.store.domain.Store;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityNotFoundException;
 import java.util.List;
 import java.util.Stack;
 import java.util.stream.Collectors;
@@ -28,13 +25,13 @@ public class ReviewService {
     private final ReviewRepository reviewRepository;
 
     @Transactional
-    public Review createByReviewReqDto(Member member, Store store, ReviewReqDto reviewReqDto) {
+    public Review createByReviewReqDto(Member member, Store store, ReviewReqDto reviewReqDto, String fileUrl) {
         Review review = Review.builder()
                 .star(reviewReqDto.getStar())
                 .title(reviewReqDto.getTitle())
                 .content(reviewReqDto.getContent())
                 .hasImage(reviewReqDto.getHasImage())
-                .imageUrl(reviewReqDto.getImageUrl())
+                .imageUrl(fileUrl)
                 .member(member)
                 .store(store)
                 .build();

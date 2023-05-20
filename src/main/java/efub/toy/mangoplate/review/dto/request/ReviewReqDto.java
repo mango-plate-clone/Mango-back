@@ -12,7 +12,6 @@ public class ReviewReqDto {
     private String content;
     private int star;
     private Boolean hasImage;
-    private String imageUrl;
     private Long memberId;
     private Long storeId;
 

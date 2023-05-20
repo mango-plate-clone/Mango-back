@@ -1,4 +1,4 @@
-package efub.toy.mangoplate.global;
+package efub.toy.mangoplate.global.exception;
 
 import lombok.Builder;
 import lombok.Getter;

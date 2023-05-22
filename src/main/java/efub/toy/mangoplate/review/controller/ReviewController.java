@@ -37,7 +37,10 @@ public class ReviewController extends BaseEntity {
         if (requestDto.getHasImage().equals(false) && !image.isEmpty()){
             throw new CustomException(ErrorCode.HAS_IMAGE_ERROR);
         }
-        String fileUrl = s3Uploader.upload(image, "image");
+        String fileUrl = null;
+        if(requestDto.getHasImage().equals(true) && !image.isEmpty()){
+             fileUrl = s3Uploader.upload(image, "image");
+        }
         ReviewResDto reviewResDto =reviewFacade.createByReviewReqDto(member, requestDto, fileUrl);
         return ResponseEntity.ok(reviewResDto);
     }

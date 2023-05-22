@@ -34,11 +34,8 @@ public class ReviewController extends BaseEntity {
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
     public ResponseEntity<ReviewResDto> createReview(@AuthUser Member member, @RequestPart(value = "image",required = false) MultipartFile image, @RequestPart(value = "dto") ReviewReqDto requestDto) throws IOException {
-        if (requestDto.getHasImage().equals(false) && !image.isEmpty()){
-            throw new CustomException(ErrorCode.HAS_IMAGE_ERROR);
-        }
         String fileUrl = null;
-        if(requestDto.getHasImage().equals(true) && !image.isEmpty()){
+        if(requestDto.getHasImage().equals(true)){
              fileUrl = s3Uploader.upload(image, "image");
         }
         ReviewResDto reviewResDto =reviewFacade.createByReviewReqDto(member, requestDto, fileUrl);

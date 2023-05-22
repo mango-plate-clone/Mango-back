@@ -33,7 +33,7 @@ public class ReviewController extends BaseEntity {
     private final S3Uploader s3Uploader;
 
     @PostMapping(consumes = MediaType.MULTIPART_FORM_DATA_VALUE)
-    public ResponseEntity<ReviewResDto> createReview(@AuthUser Member member, @RequestPart(value = "image") MultipartFile image, @RequestPart(value = "dto") ReviewReqDto requestDto) throws IOException {
+    public ResponseEntity<ReviewResDto> createReview(@AuthUser Member member, @RequestPart(value = "image",required = false) MultipartFile image, @RequestPart(value = "dto") ReviewReqDto requestDto) throws IOException {
         if (requestDto.getHasImage().equals(false) && !image.isEmpty()){
             throw new CustomException(ErrorCode.HAS_IMAGE_ERROR);
         }

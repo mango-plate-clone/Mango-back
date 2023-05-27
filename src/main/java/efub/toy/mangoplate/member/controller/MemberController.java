@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @RestController
@@ -19,7 +20,7 @@ public class MemberController {
     private final MemberService memberService;
 
     @PostMapping("/login/kakao")
-    public LoginResponseDto kakaoLogin(@RequestParam("code") String code) {
+    public LoginResponseDto kakaoLogin(@RequestParam("code") String code) throws UnsupportedEncodingException {
         Member member = memberService.getAccessToken(code);
         return memberService.login(member);
     }

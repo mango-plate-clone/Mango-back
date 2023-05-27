@@ -22,6 +22,8 @@ import org.springframework.util.LinkedMultiValueMap;
 import org.springframework.util.MultiValueMap;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.client.RestTemplate;
+import org.springframework.web.util.UriComponents;
+import org.springframework.web.util.UriComponentsBuilder;
 
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
@@ -45,7 +47,6 @@ public class MemberService {
 
     public Member getAccessToken(String code) throws UnsupportedEncodingException {
         RestTemplate rt = new RestTemplate();
-        String encodedURI = URLEncoder.encode(kakaoRedirectUri, StandardCharsets.UTF_8);
 
         HttpHeaders headers = new HttpHeaders();
         headers.add("Content-type", "application/x-www-form-urlencoded;charset=utf-8");
@@ -53,7 +54,7 @@ public class MemberService {
         MultiValueMap<String, String> params = new LinkedMultiValueMap<>();
         params.add("grant_type", "authorization_code");
         params.add("client_id", kakaoClientId);
-        params.add("redirect_uri", encodedURI);
+        params.add("redirect_uri", kakaoRedirectUri);
         params.add("code", code);
 
         HttpEntity<MultiValueMap<String, String>> kakaoTokenRequest = new HttpEntity<>(params, headers);

@@ -43,7 +43,8 @@ public class ReviewService {
 
     @Transactional(readOnly = true)
     public int getReviewCount(Long storeId) {
-        return reviewRepository.countByStoreStoreId(storeId);
+        int reviewCount = reviewRepository.countByStoreStoreId(storeId);
+        return reviewCount;
     }
     @Transactional(readOnly = true)
     public Review getReviewById(Long reviewId){

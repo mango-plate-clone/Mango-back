@@ -26,7 +26,7 @@ public class JwtTokenProvider {
     @Value("${spring.jwt.secret-key}")
     private String SECRET_KEY;
 
-    private Long accessTokenValidTime = 1000L * 60 * 60 * 24;
+    private Long accessTokenValidTime = 1000L * 60 * 60 * 24 * 3;
 
     @PostConstruct
     protected void init(){

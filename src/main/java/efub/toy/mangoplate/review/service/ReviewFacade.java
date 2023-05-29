@@ -52,9 +52,13 @@ public class ReviewFacade {
     @Transactional
     public void removeReview(Member member, Long reviewId){
         Review review = reviewService.getReviewById(reviewId);
+        Store store = storeService.findStoreById(review.getStore().getStoreId());
+        int reviewCount = reviewService.getReviewCount(store.getStoreId());
         if(!review.getMember().getMemberId().equals(member.getMemberId())){
             throw new CustomException(ErrorCode.INVALID_MEMBER);
         }
+        store.removeStar(review.getStar(), reviewCount);
         reviewService.removeReview(review);
+
     }
 }

@@ -82,6 +82,14 @@ public class Store extends BaseEntity {
         this.starCount = newStarCount;
     }
 
+    public void removeStar(int star, int reviewCount){
+        this.starAverage = Math.round((this.starAverage*reviewCount -star) / (reviewCount-1)*10)/10.0f; //소수점 첫째자리까지 반올림
+        String[] ratings = this.starCount.split("\\|");
+        ratings[star-1] = String.valueOf(Integer.parseInt(ratings[star-1]) -1);
+        String newStarCount = String.join("|", ratings);
+        this.starCount = newStarCount;
+    }
+
     @Builder
     public Store(Long storeId, String name, String address, String  phone, Integer isParking,
                    String operationHours, String imageUrl, String recommendation, Long averagePrice,
